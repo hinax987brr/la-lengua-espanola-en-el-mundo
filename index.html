@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Entraînement : l’espagnol et son poder blando</title>
+<style>
+:root{--bg:#faf7f2;--card:#fff;--tx:#1f2430;--mu:#6b7280;--ac:#c8102e;--ok:#1b7f4b;--ko:#b42318;--bd:#e5e0d6;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#15171c;--card:#1f232b;--tx:#eceef2;--mu:#9aa3b2;--ac:#ff5a6e;--ok:#4cc38a;--ko:#ff7b72;--bd:#323846;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#15171c;--card:#1f232b;--tx:#eceef2;--mu:#9aa3b2;--ac:#ff5a6e;--ok:#4cc38a;--ko:#ff7b72;--bd:#323846;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:17px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+main{max-width:640px;margin:0 auto;padding:20px 16px 40px}
+h1{font-size:1.35rem;margin:0 0 4px}
+.sub{color:var(--mu);font-size:.92rem;margin:0 0 16px}
+.bar{height:8px;background:var(--bd);border-radius:8px;overflow:hidden;margin:8px 0 4px}
+.bar i{display:block;height:100%;width:0;background:var(--ac);transition:width .3s}
+.meta{display:flex;justify-content:space-between;color:var(--mu);font-size:.85rem}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:18px;margin-top:14px}
+.q{font-size:1.1rem;font-weight:600;margin:0 0 12px}
+input{width:100%;font:inherit;padding:12px;border:1px solid var(--bd);border-radius:10px;background:var(--bg);color:var(--tx)}
+.row{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+button{font:inherit;padding:10px 16px;border-radius:10px;border:1px solid var(--bd);background:var(--card);color:var(--tx);cursor:pointer}
+button.p{background:var(--ac);border-color:var(--ac);color:#fff}
+.fb{margin-top:14px;padding:12px;border-radius:10px;display:none}
+.fb.ok{display:block;background:color-mix(in srgb,var(--ok) 14%,transparent);border:1px solid var(--ok)}
+.fb.ko{display:block;background:color-mix(in srgb,var(--ko) 14%,transparent);border:1px solid var(--ko)}
+.fb b{display:block;margin-bottom:2px}
+.end{text-align:center}.end .big{font-size:2.2rem;font-weight:700;color:var(--ac)}
+</style>
+</head>
+<body>
+<main>
+<h1>🇪🇸 El español y su poder blando</h1>
+<p class="sub">Lis la question en français, réponds <b>en espagnol</b>. Les accents et les majuscules ne comptent pas.</p>
+<div class="bar"><i id="bar"></i></div>
+<div class="meta"><span id="pos"></span><span id="sc"></span></div>
+<div class="card" id="card"></div>
+</main>
+<script>
+var Q=[
+["Combien de personnes ont l’espagnol pour langue maternelle (rapport 2024 de l’Instituto Cervantes) ?","Más de 500 millones (el 7 % de la población mundial).",["500"]],
+["Quelle langue compte plus de locuteurs maternels que l’espagnol ?","El mandarín.",["mandarin"]],
+["Dans quelle communauté autonome d’Espagne est né l’espagnol ?","La Rioja (monasterios de San Millán de la Cogolla).",["rioja"]],
+["Comment s’appelle le premier document écrit en espagnol (début du XIe siècle) ?","Las Glosas Emilianenses.",["glosas"]],
+["Quel pays compte le plus de locuteurs natifs de l’espagnol ?","México (130 millones).",["mexico"]],
+["Combien de pays ont l’espagnol comme langue officielle ?","Veintiuno (21).",["veintiun","21"]],
+["Quel pays d’Afrique subsaharienne parle espagnol (ancienne colonie espagnole) ?","Guinea Ecuatorial.",["guinea"]],
+["Quelle place les États-Unis occuperont-ils parmi les pays hispanophones en 2060 ?","El segundo, después de México.",["segundo"]],
+["Quelle place l’espagnol occupe-t-il parmi les langues d’Internet ?","El tercer idioma en línea, después del inglés y el mandarín.",["tercer","tercero"]],
+["Quel pays est la première destination des étudiants Erasmus ?","España (un 17 % del total).",["espana"]],
+["Quel pays compte le plus d’étudiants d’espagnol dans le monde ?","Estados Unidos (8,08 millones).",["estados unidos","eeuu","ee uu"]],
+["En quelle année l’Instituto Cervantes a-t-il été fondé ?","En 1991.",["1991"]],
+["En quelle année la Real Academia Española a-t-elle été créée ?","En 1713.",["1713"]],
+["Quel pourcentage des articles scientifiques de 2022 était en espagnol ?","El 1,3 %.",["1,3","1.3"]],
+["Qui est l’auteur de la première grammaire de la langue castillane (1492) ?","Antonio de Nebrija.",["nebrija"]],
+["Quel candidat a été le premier à tenir des meetings en espagnol aux États-Unis (1960) ?","John Fitzgerald Kennedy.",["kennedy"]],
+["Quelle chaîne de télévision hispanique américaine a été lancée en 1961 ?","Univisión.",["univision"]],
+["Quel traité de 1848 a fait passer d’anciens territoires mexicains aux États-Unis ?","El tratado de Guadalupe Hidalgo.",["guadalupe"]],
+["Quel mouvement américain, fondé en 1907, s’oppose à la diffusion de l’espagnol ?","El Movimiento English Only (« Sólo Inglés »).",["english only","solo ingles"]],
+["Qui était l’artiste le plus écouté sur Spotify en 2020, 2021 et 2022 ?","Bad Bunny.",["bad bunny"]],
+["Qui a assuré le spectacle de la mi-temps du Super Bowl 2020 ?","Shakira y Jennifer López.",["shakira"]],
+["Quel album de Rosalía a marqué son succès mondial en 2022 ?","Motomami.",["motomami"]],
+["Quelle série espagnole a déclenché l’essor des séries espagnoles (2017-2021) ?","La casa de papel.",["casa de papel"]],
+["Quelle marque galicienne de chips apparaît dans le film « Parasite » ?","Bonilla.",["bonilla"]]
+];
+var order,i,score,done;
+function norm(s){return s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[.!?¿¡«»"]/g,"").trim()}
+function shuffle(a){a=a.slice();for(var j=a.length-1;j>0;j--){var k=Math.floor(Math.random()*(j+1)),t=a[j];a[j]=a[k];a[k]=t}return a}
+function start(){order=shuffle(Q);i=0;score=0;show()}
+function $(id){return document.getElementById(id)}
+function show(){
+ done=false;
+ $("bar").style.width=(i/order.length*100)+"%";
+ $("sc").textContent="Score : "+score;
+ if(i>=order.length){
+  $("pos").textContent="Terminé";
+  $("card").innerHTML='<div class="end"><div class="big">'+score+' / '+order.length+'</div><p>'+(score>=order.length*0.8?'¡Excelente ! 🎉':score>=order.length*0.5?'¡Bien ! Continue à t’entraîner.':'¡Ánimo ! Relis le document et réessaie.')+'</p><button class="p" onclick="start()">Recommencer</button></div>';
+  return}
+ $("pos").textContent="Question "+(i+1)+" / "+order.length;
+ $("card").innerHTML='<p class="q">'+order[i][0]+'</p><input id="in" autocomplete="off" autocapitalize="off" placeholder="Ta réponse en espagnol…"><div class="row"><button class="p" id="ok">Valider</button><button id="rv">Voir la réponse</button></div><div class="fb" id="fb"></div>';
+ $("ok").onclick=check;$("rv").onclick=function(){reveal(false)};
+ $("in").onkeydown=function(e){if(e.key==="Enter")done?next():check()};
+ $("in").focus()}
+function check(){
+ if(done)return;
+ var v=norm($("in").value);if(!v)return;
+ var ok=order[i][2].some(function(k){return v.indexOf(norm(k))>-1});
+ reveal(ok)}
+function reveal(ok){
+ if(done)return;done=true;if(ok)score++;
+ var f=$("fb");f.className="fb "+(ok?"ok":"ko");
+ f.innerHTML='<b>'+(ok?'✔ ¡Correcto !':'✘ Réponse attendue')+'</b>'+order[i][1];
+ $("sc").textContent="Score : "+score;
+ $("ok").style.display="none";$("rv").style.display="none";
+ var b=document.createElement("button");b.className="p";b.textContent=i+1>=order.length?"Résultat":"Suivant →";b.onclick=next;
+ $("card").querySelector(".row").appendChild(b);b.focus()}
+function next(){i++;show()}
+start();
+</script>
+</body>
+</html>
